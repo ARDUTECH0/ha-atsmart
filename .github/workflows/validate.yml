@@ -22,3 +22,6 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
+          # The brand lives in home-assistant/brands#10596; until it merges the
+          # brands check can't pass. Remove this line once the PR is merged.
+          ignore: brands
