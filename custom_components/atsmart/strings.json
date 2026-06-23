@@ -1,0 +1,24 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ATSmart",
+        "description": "Sign in with your ATSmart account. Your devices are added automatically.",
+        "data": {
+          "email": "Email",
+          "password": "Password",
+          "local_control": "Use local control (faster, on the same network)",
+          "bridge_url": "Bridge URL (advanced)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Wrong email or password.",
+      "cannot_connect": "Couldn't reach the ATSmart service. Check your connection and the bridge URL.",
+      "unknown": "Unexpected error. Please try again."
+    },
+    "abort": {
+      "already_configured": "This ATSmart account is already set up."
+    }
+  }
+}
