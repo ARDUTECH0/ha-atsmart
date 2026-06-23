@@ -86,6 +86,7 @@ class ATSmartLight(ATSmartEntity, LightEntity):
                 rgb = self.rgb_color
                 if not rgb or sum(rgb) == 0:
                     rgb = (255, 255, 255)
+            self._hub.optimistic(self._id, on=True, rgb=list(rgb))
             await self._hub.async_send(self._serial, {"rgb": {idx: list(rgb)}})
             return
         # Dimmer/fan: convert HA 0..255 brightness to the board's 0..100.
@@ -94,13 +95,16 @@ class ATSmartLight(ATSmartEntity, LightEntity):
         else:
             level = ep.get("brightness") or 100
         key = "fan" if ep.get("fan") else "dim"
+        self._hub.optimistic(self._id, on=True, brightness=level)
         await self._hub.async_send(self._serial, {key: {idx: level}})
 
     async def async_turn_off(self, **kwargs) -> None:
         ep = self._ep
         idx = str(ep["chan_index"])
         if ep.get("kind") == "color":
+            self._hub.optimistic(self._id, on=False, rgb=[0, 0, 0])
             await self._hub.async_send(self._serial, {"rgb": {idx: [0, 0, 0]}})
         else:
             key = "fan" if ep.get("fan") else "dim"
+            self._hub.optimistic(self._id, on=False, brightness=0)
             await self._hub.async_send(self._serial, {key: {idx: 0}})

@@ -6,9 +6,7 @@
         "description": "Sign in with your ATSmart account. Your devices are added automatically.",
         "data": {
           "email": "Email",
-          "password": "Password",
-          "local_control": "Use local control (faster, on the same network)",
-          "bridge_url": "Bridge URL (advanced)"
+          "password": "Password"
         }
       }
     },

@@ -46,11 +46,13 @@ class ATSmartSwitch(ATSmartEntity, SwitchEntity):
         return bool(self._ep.get("on"))
 
     async def async_turn_on(self, **kwargs) -> None:
+        self._hub.optimistic(self._id, on=True)
         await self._hub.async_send(
             self._serial, {"relays": {str(self._ep["relay_index"]): True}}
         )
 
     async def async_turn_off(self, **kwargs) -> None:
+        self._hub.optimistic(self._id, on=False)
         await self._hub.async_send(
             self._serial, {"relays": {str(self._ep["relay_index"]): False}}
         )

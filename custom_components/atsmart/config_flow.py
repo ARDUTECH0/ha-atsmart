@@ -71,12 +71,13 @@ class ATSmartConfigFlow(ConfigFlow, domain=DOMAIN):
                     },
                 )
 
+        # Professional, minimal sign-in: just email + password. Local control is
+        # always on (best-effort, falls back to cloud) and the bridge URL uses the
+        # default — both handled internally, not shown to the user.
         schema = vol.Schema(
             {
                 vol.Required(CONF_EMAIL): str,
                 vol.Required(CONF_PASSWORD): str,
-                vol.Optional(CONF_LOCAL, default=True): bool,
-                vol.Optional(CONF_BRIDGE_URL, default=DEFAULT_BRIDGE_URL): str,
             }
         )
         return self.async_show_form(

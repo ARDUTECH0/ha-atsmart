@@ -217,6 +217,21 @@ class ATSmartHub:
     def unit_info(self, serial: str) -> dict:
         return self.units.get(serial, {})
 
+    def control_path(self, serial: str) -> str:
+        """Which channel a command to this unit will currently take."""
+        link = self._local.get(serial)
+        return "local" if (link and link.connected) else "cloud"
+
+    @callback
+    def optimistic(self, endpoint_id: str, **changes) -> None:
+        """Apply an expected state immediately so the UI responds instantly; the
+        unit's echo (local or cloud, usually within ~100 ms) then confirms it."""
+        ep = self.endpoints.get(endpoint_id)
+        if not ep:
+            return
+        ep.update(changes)
+        self._dispatch_update()
+
     async def async_send(self, serial: str, payload: dict[str, Any]) -> None:
         """Send a command, preferring the local link, falling back to the cloud."""
         payload = {**payload, "owner": self.uid}

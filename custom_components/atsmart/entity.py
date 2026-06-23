@@ -35,6 +35,11 @@ class ATSmartEntity(Entity):
         return self._hub.is_online(self._serial)
 
     @property
+    def extra_state_attributes(self) -> dict:
+        # Shows whether control is currently going over the LAN or the cloud.
+        return {"connection": self._hub.control_path(self._serial)}
+
+    @property
     def device_info(self) -> DeviceInfo:
         unit = self._hub.unit_info(self._serial)
         return DeviceInfo(
