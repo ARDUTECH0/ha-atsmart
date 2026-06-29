@@ -1,6 +1,6 @@
 {
   "domain": "atsmart",
-  "name": "ATSmart",
+  "name": "KUSH SMART",
   "codeowners": ["@ARDUTECH0"],
   "config_flow": true,
   "documentation": "https://github.com/ARDUTECH0/ha-atsmart",
@@ -8,5 +8,5 @@
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/ARDUTECH0/ha-atsmart/issues",
   "requirements": ["paho-mqtt>=1.6.1"],
-  "version": "1.0.3"
+  "version": "1.0.4"
 }

@@ -49,8 +49,8 @@ prefers that path for instant control.
 
 ## Advanced
 
-The **Bridge URL** field (default `https://smart.atgenx.com`) only needs changing
-if you self-host the ATSmart bridge. Local control can be turned off from the same
+The **Bridge URL** field (default `https://smart.kushsmart.space`) only needs changing
+if you self-host the KUSH SMART bridge. Local control can be turned off from the same
 setup dialog if you prefer cloud-only.
 
 ## License
