@@ -11,8 +11,8 @@ YAML, no manual entity setup, no blank/empty config.
   the unit is on the same network, and falls back to the cloud when you're away.
 - ✅ **Account-scoped** — you only ever see *your* devices. Nothing from other
   accounts can appear or interfere.
-- ✅ Switches (relays), dimmable lights, fans, RGB lights, temperature &
-  humidity, analog and contact/door sensors.
+- ✅ Switches (relays), dimmable lights, fans, RGB lights, shutters/curtains
+  (covers), temperature & humidity, analog and contact/door sensors.
 
 ## Installation
 
@@ -43,6 +43,7 @@ prefers that path for instant control.
 | Relay                 | `switch`                         |
 | Dimmer / Fan          | `light` (brightness)             |
 | RGB / WS2812          | `light` (RGB)                    |
+| Shutter / curtain     | `cover` (open / close / stop)    |
 | DHT sensor            | `sensor` temperature + humidity  |
 | Analog sensor         | `sensor`                         |
 | Digital / door sensor | `binary_sensor` (opening)        |

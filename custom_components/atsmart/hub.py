@@ -175,6 +175,15 @@ class ATSmartHub:
                 "on": sum(int(c) for c in color[:3]) > 0, "rgb": color,
             }))
 
+        # Shutters / curtains / rollers → covers.
+        for sh in s.get("shutters", []) or []:
+            idx = sh.get("index")
+            found.append((f"{serial}:sh{idx}", {
+                "kind": "cover", "chan_index": idx,
+                "name": sh.get("name") or f"Cover {idx}",
+                "state": sh.get("state") or "stop",
+            }))
+
         # Sensors → read-only entities.
         for se in s.get("sensors", []) or []:
             idx = se.get("index")

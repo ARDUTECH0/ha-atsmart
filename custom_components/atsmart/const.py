@@ -20,7 +20,7 @@ CONF_MQTT_PASS = "mqtt_pass"
 CONF_LOCAL = "local_control"
 
 # Platforms this integration creates entities for.
-PLATFORMS = ["switch", "light", "sensor", "binary_sensor"]
+PLATFORMS = ["switch", "light", "cover", "sensor", "binary_sensor"]
 
 # Dispatcher signals (suffixed with the entry_id).
 SIGNAL_NEW_ENDPOINTS = "atsmart_new_endpoints_{}"
