@@ -80,3 +80,55 @@ async def fetch_credentials(
         "mqtt_user": creds["username"],
         "mqtt_pass": creds["password"],
     }
+
+
+# ── Pairing-by-code (link from the already-signed-in app) ────────────────────
+
+
+async def pair_new(session: aiohttp.ClientSession, bridge_url: str) -> tuple[str, str]:
+    """Ask the bridge for a fresh pairing session.
+
+    Returns (code, session_id). The user types `code` into the app.
+    """
+    url = bridge_url.rstrip("/") + "/ha/pair/new"
+    try:
+        async with session.post(
+            url, timeout=aiohttp.ClientTimeout(total=20)
+        ) as resp:
+            if resp.status != 200:
+                raise BridgeError(f"bridge returned HTTP {resp.status}")
+            body = await resp.json(content_type=None)
+    except aiohttp.ClientError as err:
+        raise BridgeError(f"bridge network error: {err}") from err
+    return body["code"], body["id"]
+
+
+async def pair_poll(
+    session: aiohttp.ClientSession, bridge_url: str, pair_id: str
+) -> tuple[str, dict | None]:
+    """Check whether the app has claimed the code yet.
+
+    Returns (status, creds) where status is "linked" | "pending" | "expired".
+    `creds` is only present when linked.
+    """
+    url = bridge_url.rstrip("/") + "/ha/pair/poll"
+    try:
+        async with session.get(
+            url, params={"id": pair_id}, timeout=aiohttp.ClientTimeout(total=20)
+        ) as resp:
+            if resp.status != 200:
+                raise BridgeError(f"bridge returned HTTP {resp.status}")
+            body = await resp.json(content_type=None)
+    except aiohttp.ClientError as err:
+        raise BridgeError(f"bridge network error: {err}") from err
+
+    status = body.get("status")
+    if status != "linked":
+        return status or "expired", None
+    return "linked", {
+        "uid": body["uid"],
+        "mqtt_host": body["host"],
+        "mqtt_port": int(body["port"]),
+        "mqtt_user": body["username"],
+        "mqtt_pass": body["password"],
+    }
