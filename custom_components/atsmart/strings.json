@@ -2,36 +2,33 @@
   "config": {
     "step": {
       "user": {
-        "title": "ATSmart",
+        "title": "KUSH SMART",
         "description": "How do you want to link your account?",
         "menu_options": {
           "link_app": "Link with the app (recommended)",
           "link_email": "Email & password"
         }
       },
-      "link_app": {
-        "title": "Link with the app",
-        "description": "Open the KUSH SMART app → Profile → **Link Home Assistant**, and enter this code:\n\n## {code}\n\nThen press **Submit** below. The code is valid for 5 minutes."
-      },
       "link_email": {
         "title": "Sign in",
-        "description": "Sign in with your ATSmart account. Your devices are added automatically.",
+        "description": "Sign in with your KUSH SMART account. Your devices are added automatically.",
         "data": {
           "email": "Email",
           "password": "Password"
         }
       }
     },
+    "progress": {
+      "waiting": "Open the KUSH SMART app → Profile → **Link Home Assistant**, then scan this QR or type the code:\n\n![QR]({qr})\n\n# {code}\n\n⏳ Waiting for the app to link… this finishes on its own."
+    },
     "error": {
       "invalid_auth": "Wrong email or password.",
-      "cannot_connect": "Couldn't reach the ATSmart service. Check your connection.",
-      "not_linked_yet": "Not linked yet — enter the code in the app, then press Submit.",
-      "code_expired": "The code expired. A new code is shown above — enter it in the app.",
+      "cannot_connect": "Couldn't reach the KUSH SMART service. Check your connection.",
       "unknown": "Unexpected error. Please try again."
     },
     "abort": {
-      "already_configured": "This ATSmart account is already set up.",
-      "cannot_connect": "Couldn't reach the ATSmart service. Check your connection."
+      "already_configured": "This KUSH SMART account is already set up.",
+      "cannot_connect": "Couldn't reach the KUSH SMART service. Check your connection."
     }
   }
 }
