@@ -110,13 +110,23 @@ class ATSmartDashboardButton(ButtonEntity):
                 "notification_id": f"{DOMAIN}_dashboard_ready",
                 "message": (
                     f"Dashboard file ready:\n\n`{path}`\n\n"
-                    "One-time step to use it: **Settings -> Dashboards -> "
-                    "Add Dashboard -> New dashboard from scratch**, give it a "
-                    "name, then open its 3-dot menu -> **Edit Dashboard** -> "
-                    "3-dot menu -> **Raw configuration editor**, and paste in "
-                    "the contents of that file.\n\n"
-                    "Press this button again any time you add a device, to "
-                    "refresh the file with the new one."
+                    "One-time step to use it — add this to `configuration.yaml` "
+                    "(Settings -> Add-ons -> File editor, or however you "
+                    "normally reach it), then **restart Home Assistant**:\n\n"
+                    "```yaml\n"
+                    "lovelace:\n"
+                    "  dashboards:\n"
+                    "    kush-smart:\n"
+                    "      mode: yaml\n"
+                    "      title: KUSH SMART\n"
+                    "      icon: mdi:home-automation\n"
+                    "      show_in_sidebar: true\n"
+                    "      filename: custom_components/atsmart/dashboards/kush_smart.yaml\n"
+                    "```\n\n"
+                    "\"KUSH SMART\" then shows up in the sidebar on its own, "
+                    "and reads this file live — no copy/paste, and no need to "
+                    "repeat this step. Press this button again any time you "
+                    "add a device; the dashboard picks it up on its own."
                 ),
             },
         )
