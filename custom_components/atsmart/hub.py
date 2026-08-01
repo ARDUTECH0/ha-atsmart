@@ -35,6 +35,40 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
+def _pretty_button_name(raw: str) -> str:
+    """Mirrors the firmware's own prettyBtn() (atgenx_halo.ino) so a learned
+    key reads the same everywhere: "__ac_<id>_temp_24" -> "AC 24°", etc. A
+    plain name the app sent directly (no "__type_id_key" shape) passes
+    through unchanged."""
+    if not raw.startswith("__"):
+        return raw
+    s = raw[2:]
+    if "_" not in s:
+        return raw
+    t, rest = s.split("_", 1)
+    if "_" not in rest:
+        return raw
+    key = rest.split("_", 1)[1]
+    tl = {"ac": "AC", "rc": "Receiver", "tv": "TV"}.get(t, "Remote")
+    if key.startswith("num_"):
+        kl = key[4:]
+    elif key.startswith("temp_"):
+        kl = f"{key[5:]}°"
+    elif key.startswith("mode_"):
+        kl = key[5:]
+    elif key.startswith("fan_"):
+        kl = f"Fan {key[4:]}"
+    else:
+        kl = {
+            "power": "Power", "power_off": "Power Off", "source": "Source",
+            "mute": "Mute", "vol_up": "Vol +", "vol_dn": "Vol -",
+            "ch_up": "Ch +", "ch_dn": "Ch -", "ok": "OK", "up": "Up",
+            "down": "Down", "left": "Left", "right": "Right", "menu": "Menu",
+            "home": "Home", "back": "Back", "exit": "Exit",
+        }.get(key, key)
+    return f"{tl} {kl}"
+
+
 class ATSmartHub:
     """Owns the broker connection and the in-memory device model."""
 
@@ -205,6 +239,20 @@ class ATSmartHub:
                 found.append((f"{serial}:dig{idx}", {
                     "kind": "contact", "name": name,
                     "detected": se.get("value") in (True, 1)}))
+
+        # Learned IR/RF buttons (IR/RF hub boards, e.g. atgenx_halo) — one-shot
+        # "press it, it replays that key" entities. This is the ONLY endpoint
+        # kind a board like that reports (no states/dimmers/sensors), so
+        # without this branch the whole device produced zero entities and
+        # never showed up in HA at all.
+        for btn in s.get("buttons", []) or []:
+            raw = btn.get("name")
+            if not raw:
+                continue
+            found.append((f"{serial}:btn:{raw}", {
+                "kind": "button", "send_name": raw,
+                "name": _pretty_button_name(raw),
+            }))
 
         new_eps: list[dict] = []
         for eid, ep in found:
